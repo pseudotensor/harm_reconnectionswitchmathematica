@@ -213,7 +213,8 @@ gammavalue=mygammafinal[Ljet,thetajet]//.consts;
 
 (* get geometrical results first *)
 Rjet=Ljet*Sin[thetajet];
-(* Don't modify Lp with Rjetmod, just assume lmode restricted to lmode>gammavalue*thetajet *)Lp=1/(lmode/(Pi*Rjet) + mmode*omegafvalue/(gammavalue*2*Pi*c))//.consts;
+(* Don't modify Lp with Rjetmod, just assume lmode restricted to lmode>gammavalue*thetajet *)
+Lp=1/(lmode/(Pi*Rjet) + mmode*omegafvalue/(gammavalue*2*Pi*c))//.consts;
 Lpnum=Lp//.consts;
 (* modifications to Rjet and Lp *)
 (* vrecguess only valid in fast reconnection regime, need to iterate to see if fast or slow! *)
