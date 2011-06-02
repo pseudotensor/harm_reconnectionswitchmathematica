@@ -49,7 +49,7 @@ halfsinglecall;
 
 (* 1 = laptop 2=home 3=ki-rh42 linux=4 *)
 Unprotect[whichsystem];
-whichsystem=1;
+whichsystem=4;
 Protect[whichsystem];
 
 
@@ -130,8 +130,8 @@ mythfp=0.000345115199474988181699286471371;
 mylmode=2;
 mymmode=0;
 
-mylmode=1;
-mymmode=0.01;
+mylmode=0;
+mymmode=0.1;
 
 
 (* ensure precision is kept *)

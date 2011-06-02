@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       145,          7]
-NotebookDataLength[     56458,       1459]
-NotebookOptionsPosition[     53374,       1360]
-NotebookOutlinePosition[     53752,       1376]
-CellTagsIndexPosition[     53709,       1373]
+NotebookDataLength[     56564,       1461]
+NotebookOptionsPosition[     53487,       1362]
+NotebookOutlinePosition[     53857,       1378]
+CellTagsIndexPosition[     53814,       1375]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -116,13 +116,14 @@ Cell[BoxData[
     RowBox[{"Unprotect", "[", "whichsystem", "]"}], ";"}], 
    "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"whichsystem", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"whichsystem", "=", "4"}], ";"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"Protect", "[", "whichsystem", "]"}], ";"}]}]}]], "Input",
  InitializationCell->True,
  CellChangeTimes->{{3.494351357837573*^9, 3.4943513729693313`*^9}, {
   3.49435147722925*^9, 3.4943514859417777`*^9}, {3.494611440079423*^9, 
-  3.494611447211171*^9}}],
+  3.494611447211171*^9}, {3.5159715368728523`*^9, 3.5159715369794827`*^9}, {
+  3.5159716057424917`*^9, 3.515971605834805*^9}}],
 
 Cell[BoxData[
  RowBox[{"\[IndentingNewLine]", 
@@ -319,8 +320,8 @@ Cell[BoxData[
       RowBox[{"mylmode", "=", "2"}], ";", "\[IndentingNewLine]", 
       RowBox[{"mymmode", "=", "0"}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", 
-      RowBox[{"mylmode", "=", "1"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"mymmode", "=", "0.01"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"mylmode", "=", "0"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"mymmode", "=", "0.1"}], ";", "\[IndentingNewLine]", 
       "\[IndentingNewLine]", "\[IndentingNewLine]", 
       RowBox[{"(*", " ", 
        RowBox[{"ensure", " ", "precision", " ", "is", " ", "kept"}], " ", 
@@ -359,35 +360,36 @@ Cell[BoxData[
     "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
  InitializationCell->True,
  CellChangeTimes->CompressedData["
-1:eJwd1Gs0FAgUAGCrSJbSQ1TOmJWWGYWcCAlDHk2RY23KMCZ5VSKllWQ8EkZK
-WaxSjS1KJbHHogfJqk5KRYg2jbzN6iEbY5qtvff+uOf7ce+P+zjn/hAU5R2i
-rKSkFAeBjnTHWQ61j3LuJvhZoZPGcfbopwpNJ9TKzmkDyr/lSlrrfk427hjl
-zIp2SEFHngy3ssDz1pOkz9fIzR6gmvt7XzQ8LZ/x6eUoZ8mohPzNLy0L3VtV
-Q6aJGRdQ9o51ZG9bvuYEWCEqJ7ll7yzRC5LZVmiXi0UIujPEizS1mypBeYeX
-XELDFzDKUVXz1aSNjWYbGhpnTl6VnsjlvRnlaOelnkbnnHHt54P+7A1kfnCZ
-fzw4VXCDHKnoDkGZhgXhaKeoMAL9uUpM1qWnxqCy/WlkxPXdCrTeJpHMWK6j
-ehFc5qpHqnc2WKMZSvdJr95tfDSCvzwQbRYajb+eKeXMqWORyXEDpZPg2Ldh
-skLp2PqVKlKOIIfvgRr75vAswCSbPFJPIDr3E5gxlEVODT+oRLfqNZN9mWfr
-UNs9YjKGv0zDBywf8yX/Cl7ERi/dNSWVf1fc3AoGJGrdQjUWuD1Hu1o8SN2l
-M45XqUo5sjh10uvteodqUE3GJdlC1nX0wI7VpM+ONc1omYstOTgduq0GzIyI
-IG8lZOWzZkk5TvKTZN+KsMuoWeBZ0rM365s52Ft+ityVJMheCwbFZ5I3WLev
-oFxuA6n0a2q2Nyh4mE4us3K7h6bu4pLqRn9v5IG+NT2knK9THQDan1tM5kXp
-xQWCz3gM8rpfu6MANDaRk5EFfVXoHeNBMm255U304zVr8upzhTgIZF5RKkLf
-rxOVonZPj5HFjuzYULD9lQmZ9IAbG4Zzyz3IfauXZqAvwhlkZ+z986hW8EOy
-quvxtBBkVT4jPXsORqZg3jWRVFTOEh8BX2vNJSdF+0KPgoyoK+GonnNTngjU
-KGwn+0psMl9gX3Mcyb3ORjEmalJObq85GbEqQGUlWN4URipPu542BW0rdp1F
-NX2b/kQds2dXo0xt93xrcNJAcho98bWoFV3UUkIOjH3QWQsa1lzTRSNbjBNR
-1dzNZMdA49zNanhH93moor5UH93WY8FEPxS6FKKVMzeR9h6xzahko9Vj1Plz
-ezf6jwrjFRr2IWvCH1xRUkf+oW9oIQBDhULSLNlxSwLWew74orLnXY9QS3WV
-ZtTOZwlbCJ58bU/qyVdJU8HjB31Jsa136FFQI58bhrL7ecGZYLfsENn2HbPn
-BLiFN0VuHDKfkY37yD1CKpfJGk7hvt423kP3H+7enQtaDUrITcUzxaiTixcZ
-NFHnlgfyTfnuaENO7f1W0Ht7HWnvXHH1I2jQmnkN/da9880E6NVTLEHLBVpr
-voAJOsakxGyNC9pSLyMviFocomdLOX4GAY6o2nbWVAJ4MdmUXFGkFiMEZX5z
-ycFF76rRYM44+e6rmW4B5hvs9VGtDZcL0EYD3TNof+0p/SJQ+2UkE3UW8JzR
-WutAcvyBYrwZPNk//xPq/+/daXT4Ue4XdPF/HcMtYH235yjaNk918ClYGv9k
-CFXzlte2gQrW1E2Um1Rn2AGGj700QuWSxMtoyrhyKdpYFa3VCUaaOMxHiwTM
-+i8gI//OPdToQFfaqu/hj6lqp6O6brL5buCr28UL0banI7F7wHjGmUOolaz4
-x0hQYDbDCE2yW1m/UEPKiUoXkb+cy3mINkXLyf8BCRSsfg==
+1:eJwd1Gs0FAgUAGCrSJaaHqJyxqy0DIWcCAlDHk15HGtThjHJqxIprSSvEkZK
+WWaVii1KJbHHogfJqk5KRYg2jbzN6iEbY5pl770/7vl+3PvjPs65PwRGegUr
+KigoHIZAh7tizQfbRjj3430t0AmDWFv0S7m6A2ph47AJ5d9xJi21viYbtI9w
+5kTZHUWHnw21sMGLlhOk93SEhxuo4vrRBw1LFTG/vB7hLBsRk7/5pmai+yqr
+ydQC5iXUcOcGsqdVpD4OlgvLSG7pB3P0kniuBdrpZBaM7gr2JI1tJotR3pFl
+V9CwRcwyVNl0LWllpd6KhsSaktclp3J470Y4GrkpZ9F555z7+KCf4SZSFFTq
+FwdO5t0ih8u7glGWXl4Y2iHMD0d/riwga9NSolHpgVQy/OYeOVpnlUimr9RU
+vgyucNYmVTvqLdF0hYekZ892PhrOXxmANiXoj72dLeHMq2WTybH9JRPg6MwQ
+Wa5wYuNqJQlHkM13Qw18snlmYJJVLqktEF74CUwfzCQnhx5VoNu0m8jejPO1
+qPXeAjKav0LNGywb9SH/ClpiiF65b0wq/i6/vQ30T2TcQdUWubxEO5vdSK3l
+s05WKks40lhV0vP9RrsqUEXKJQ0T2DfRgzvXkt471zWhpU7W5MBUyPZqMCM8
+nLwTnyliz5FwHGSnyd5VoVdRk4DzpHtP5owp2FN2htydJMhaDwbGZZC32Hev
+oVxuPanwa0qWFyh4nEausHB5gKbs5pKq+n9v5oE+1d2kjK9Z5Q/aXlhK5kZq
+xwaAL3hM8qZvm70ANDCSkRF5vZXoPYMBMnWl+W308w1L8vpLeUEgyLqmUIh+
+3CAsQW2enyCL7A1jQsC2N0Zk0iNuTCjOLXMj969dno6+CmOSHTEPL6KMoMdk
+ZefTqQSQXfGCdO8+FHEU886JpLxiTsEx8C1jPjkh3B9yHGRGXgtDtR0bc4Wg
+Wn4b2VtslfEK+5pnT+5z1I82UpFwcnpMyfA1/kqrwbLGUFJxyvmsMWhdvvs8
+qu7T+CdqnzW3CmVpuIoswQld8Vn01HRhC7qkuZjsH/2kuR7Uq76hhUY0GySi
+yjkeZHt/w3wPFbyj6wJUXleig27vNmOhn/Kd8tGK2VtIW7eYJlS82eIp6vi1
+rQv9R4n5Bg39lDnuB64qriX/0NEzE4AhCQmkSbL91nisd+/3QaUvO5+g5qpK
+TaiN9zLDBPD0W1tSW7ZGkgKePORDFlh7hRwH1UTcUNSwjxeUAXZJD5Ot37G6
+T4FbeZPk5kHTWVm4j5xjpGKptP4M7ut9wwP0wJGuPTmgxYCY3FI0uwB1cPIk
+A8drXXJBvjHfFa3PrnnYAnrtqCVtHcuvfwZ1WzJuoDNdu96Ng57dRWK0TMBY
+9w2M1zQgxSbrnNDmOil5SdhsFzVXwvHV9bdHVXawJ+PBy8nG5KpClegEUOo7
+nxxY8qEKDeKMkR+mTbTyMF9vq4MyNl3NQxt0tc6hfTVndApBjdcRLNRRwHNE
+aywDyLFH8rEm8HTfwi+o37/3p9ChJznf0KX/tQ81g3Vd7iNo6wLlgedgSdyz
+QVTFS1bTCsrZk7dRblKtXjsYNvpaH5WJE6+iR8cUS9CGyihGBxhhZLcQLRSw
+6r6BTNG9B6j+wc7UNd/DH1PWSEO1XKQLXcA3d4sWo63Ph2P2gnHMc4dRC2nR
+jxGgwGSWPppks7pusZqEE5kmJH+5kP0YbYySkQyP7GljM5izznoG/R8VS7PX
+
   "]],
 
 Cell[BoxData[""], "Input",
@@ -1360,8 +1362,8 @@ Cell[BoxData[""], "Input",
 },
 AutoGeneratedPackage->Automatic,
 WindowSize->{702, 929},
-WindowMargins->{{Automatic, 95}, {Automatic, 70}},
-FrontEndVersion->"7.0 for Microsoft Windows (32-bit) (February 18, 2009)",
+WindowMargins->{{Automatic, 91}, {Automatic, 43}},
+FrontEndVersion->"7.0 for Linux x86 (64-bit) (February 25, 2009)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -1376,90 +1378,90 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[567, 22, 323, 7, 31, "Input",
+Cell[567, 22, 323, 7, 32, "Input",
  InitializationCell->True],
-Cell[893, 31, 305, 9, 40, "Output",
+Cell[893, 31, 305, 9, 43, "Output",
  InitializationCell->True]
 }, Open  ]],
-Cell[1213, 43, 121, 2, 31, "Input",
+Cell[1213, 43, 121, 2, 32, "Input",
  InitializationCell->True],
 Cell[CellGroupData[{
-Cell[1359, 49, 197, 4, 31, "Input",
+Cell[1359, 49, 197, 4, 32, "Input",
  InitializationCell->True],
-Cell[1559, 55, 223, 5, 30, "Output",
+Cell[1559, 55, 223, 5, 31, "Output",
  InitializationCell->True]
 }, Open  ]],
-Cell[1797, 63, 1258, 30, 312, "Input",
+Cell[1797, 63, 1258, 30, 341, "Input",
  InitializationCell->True],
-Cell[3058, 95, 1153, 29, 152, "Input",
+Cell[3058, 95, 1254, 30, 165, "Input",
  InitializationCell->True],
-Cell[4214, 126, 2082, 50, 392, "Input",
+Cell[4315, 127, 2082, 50, 407, "Input",
  InitializationCell->True],
-Cell[6299, 178, 839, 22, 192, "Input",
+Cell[6400, 179, 839, 22, 209, "Input",
  InitializationCell->True],
-Cell[7141, 202, 8589, 188, 1392, "Input",
+Cell[7242, 203, 8601, 189, 1529, "Input",
  InitializationCell->True],
-Cell[15733, 392, 275, 4, 31, "Input",
+Cell[15846, 394, 275, 4, 32, "Input",
  InitializationCell->True],
-Cell[16011, 398, 5227, 118, 472, "Input",
+Cell[16124, 400, 5227, 118, 561, "Input",
  InitializationCell->True],
-Cell[21241, 518, 2529, 56, 532, "Input",
+Cell[21354, 520, 2529, 56, 715, "Input",
  InitializationCell->True],
-Cell[23773, 576, 2664, 57, 572, "Input",
+Cell[23886, 578, 2664, 57, 627, "Input",
  InitializationCell->True],
-Cell[26440, 635, 157, 3, 31, "Input",
+Cell[26553, 637, 157, 3, 32, "Input",
  InitializationCell->True],
-Cell[26600, 640, 184, 4, 31, "Input",
+Cell[26713, 642, 184, 4, 32, "Input",
  InitializationCell->True],
-Cell[26787, 646, 976, 26, 132, "Input",
+Cell[26900, 648, 976, 26, 143, "Input",
  InitializationCell->True],
-Cell[27766, 674, 995, 25, 132, "Input",
+Cell[27879, 676, 995, 25, 143, "Input",
  InitializationCell->True],
-Cell[28764, 701, 2038, 51, 232, "Input",
+Cell[28877, 703, 2038, 51, 253, "Input",
  InitializationCell->True],
-Cell[30805, 754, 670, 18, 92, "Input",
+Cell[30918, 756, 670, 18, 99, "Input",
  InitializationCell->True],
-Cell[31478, 774, 2295, 57, 292, "Input",
+Cell[31591, 776, 2295, 57, 319, "Input",
  InitializationCell->True],
-Cell[33776, 833, 1057, 29, 112, "Input",
+Cell[33889, 835, 1057, 29, 121, "Input",
  InitializationCell->True],
-Cell[34836, 864, 121, 2, 31, "Input",
+Cell[34949, 866, 121, 2, 32, "Input",
  InitializationCell->True],
-Cell[34960, 868, 1001, 26, 92, "Input",
+Cell[35073, 870, 1001, 26, 121, "Input",
  InitializationCell->True],
-Cell[35964, 896, 2006, 49, 212, "Input",
+Cell[36077, 898, 2006, 49, 231, "Input",
  InitializationCell->True],
-Cell[37973, 947, 620, 17, 92, "Input",
+Cell[38086, 949, 620, 17, 99, "Input",
  InitializationCell->True],
-Cell[38596, 966, 233, 5, 31, "Input",
+Cell[38709, 968, 233, 5, 32, "Input",
  InitializationCell->True],
-Cell[38832, 973, 2170, 54, 232, "Input",
+Cell[38945, 975, 2170, 54, 253, "Input",
  InitializationCell->True],
-Cell[41005, 1029, 1883, 50, 212, "Input",
+Cell[41118, 1031, 1883, 50, 231, "Input",
  InitializationCell->True],
-Cell[42891, 1081, 376, 8, 52, "Input",
+Cell[43004, 1083, 376, 8, 55, "Input",
  InitializationCell->True],
-Cell[43270, 1091, 2350, 62, 212, "Input",
+Cell[43383, 1093, 2350, 62, 231, "Input",
  InitializationCell->True],
-Cell[45623, 1155, 265, 6, 31, "Input",
+Cell[45736, 1157, 265, 6, 32, "Input",
  InitializationCell->True],
-Cell[45891, 1163, 679, 19, 92, "Input",
+Cell[46004, 1165, 679, 19, 99, "Input",
  InitializationCell->True],
-Cell[46573, 1184, 546, 14, 92, "Input",
+Cell[46686, 1186, 546, 14, 99, "Input",
  InitializationCell->True],
-Cell[47122, 1200, 256, 5, 31, "Input",
+Cell[47235, 1202, 256, 5, 32, "Input",
  InitializationCell->True],
-Cell[47381, 1207, 1745, 45, 152, "Input",
+Cell[47494, 1209, 1745, 45, 165, "Input",
  InitializationCell->True],
-Cell[49129, 1254, 121, 2, 31, "Input",
+Cell[49242, 1256, 121, 2, 32, "Input",
  InitializationCell->True],
-Cell[49253, 1258, 2007, 47, 192, "Input",
+Cell[49366, 1260, 2007, 47, 209, "Input",
  InitializationCell->True],
-Cell[51263, 1307, 262, 6, 31, "Input",
+Cell[51376, 1309, 262, 6, 32, "Input",
  InitializationCell->True],
-Cell[51528, 1315, 1716, 39, 192, "Input",
+Cell[51641, 1317, 1716, 39, 209, "Input",
  InitializationCell->True],
-Cell[53247, 1356, 123, 2, 31, "Input",
+Cell[53360, 1358, 123, 2, 32, "Input",
  InitializationCell->True]
 }
 ]
