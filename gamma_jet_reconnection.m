@@ -218,6 +218,7 @@ Lp=1/(lmode/(Pi*Rjet) + mmode*omegafvalue/(gammavalue*2*Pi*c))//.consts;
 Lpnum=Lp//.consts;
 (* modifications to Rjet and Lp *)
 (* vrecguess only valid in fast reconnection regime, need to iterate to see if fast or slow! *)
+(* TODO *)
 vrecguess=0.02*c;
 Lpmod=1/(gammavalue*Sin[thetajet]/Rjet + 2*vrecguess/(c*Lp));
 Lpmodnum=Lpmod//.consts;
