@@ -180,7 +180,7 @@ Ljet=5*10^(14);
 (*Ljet=rl;*)
 mythfp=Pi/2;
 (* assumption below *)
-Clear[Lp];
+Clear[Lp,Lpnum,Lpmod,Lpmodnum];
 mylmode=1;
 mymmode=0;
 
@@ -203,7 +203,7 @@ mymmode=SetPrecision[mymmode,lowestprec];
 (* setup values from jet solution so don't have to repeat expensive jet calculations *)
 setupvalues:=Module[
 {foo},
-Unprotect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,gammavalue,Lp,Lpnum,Pm,Um];
+Unprotect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,gammavalue,Lp,Lpmod,Lpnum,Lpmodnum,Pm,Um];
 
 
 
@@ -213,9 +213,14 @@ gammavalue=mygammafinal[Ljet,thetajet]//.consts;
 
 (* get geometrical results first *)
 Rjet=Ljet*Sin[thetajet];
-Rjetmod=Rjet/(2*gammavalue*thetajet);
-Lp=1/(lmode/(Pi*Rjet) + mmode*omegafvalue/(gammavalue*2*Pi*c))//.consts;
+(* Don't modify Lp with Rjetmod, just assume lmode restricted to lmode>gammavalue*thetajet *)Lp=1/(lmode/(Pi*Rjet) + mmode*omegafvalue/(gammavalue*2*Pi*c))//.consts;
 Lpnum=Lp//.consts;
+(* modifications to Rjet and Lp *)
+(* vrecguess only valid in fast reconnection regime, need to iterate to see if fast or slow! *)
+vrecguess=0.02*c;
+Lpmod=1/(gammavalue*Sin[thetajet]/Rjet + 2*vrecguess/(c*Lp));
+Lpmodnum=Lpmod//.consts;
+Rjetmod=Rjet/(gammavalue*Sin[thetajet]);
 
 (* choose based upon which gamma_jet {_new} file used *)
 If[1==0,
@@ -331,10 +336,15 @@ Bphiplasmavalue=SetPrecision[Bphiplasmavalue,lowestprec];
 
 Tvalue=SetPrecision[Tvalue,lowestprec];
 omegafvalue=SetPrecision[omegafvalue,lowestprec];
+
 Rjet=SetPrecision[Rjet,lowestprec];
-Rjetmod=SetPrecision[Rjetmod,lowestprec];
 Lp=SetPrecision[Lp,lowestprec];
 Lpnum=SetPrecision[Lpnum,lowestprec];
+
+Rjetmod=SetPrecision[Rjetmod,lowestprec];
+Lpmod=SetPrecision[Lpmod,lowestprec];
+Lpmodnum=SetPrecision[Lpmodnum,lowestprec];
+
 Pm=SetPrecision[Pm,lowestprec];
 Um=SetPrecision[Um,lowestprec];
 
@@ -373,7 +383,7 @@ bhvalue=(Bhvalue+udotBvalue/c*uhvalue/c)/gammavalue;
 bphivalue=(Bphivalue+udotBvalue/c*uphivalue/c)/gammavalue;
 
 
-Protect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,gammavalue,Lp,Lpnum,Pm,Um];
+Protect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,gammavalue,Lp,Lpmod,Lpnum,Lpmodnum,Pm,Um];
 ];
 
 
@@ -729,7 +739,7 @@ Unprotect[Nscal,Nscam,Nscalayers,sigmakn,sigmaB,El1,eeB0,eeB,sigmaes,dtauradscad
 (* http://www.springerlink.com/content/013232u344rl7397/ *)
 (* NOTE: below uses Lpnum, but if only looking at layer, should be Deltasp, but don't have that yet! *)
 (* below ne in radiation opacity should include electrons and positrons in flow, but don't have positrons yet, so have to iterate! *)
-(*Nscallimit=(Rjet/Hsca+2);
+(*Nscallimit=(Rjetmod/Hsca+2);
 Nscal=Min[lmode-1,Nscallimit]//.consts;
 *)
 Nscal=lmode-1//.consts;
@@ -759,7 +769,7 @@ npairseff[rhob_,T_,bgauss_,npairs_]:=(npairs)*scatterfactor2[rhob,T,bgauss,npair
 
 (* dtauradscads not really used *)
 dtauradscads[rhob_,T_,bgauss_,npairs_]:=sigmaes[T,bgauss]*(neinteff[rhob,T,bgauss,npairs]/Rjetmod+npairseff[rhob,T,bgauss,npairs])//.consts;
-columndepthsca[rhob_,T_,bgauss_,npairs_]:=npairseff[rhob,T,bgauss,npairs]*Nscalayers*Lpnum +neinteff[rhob,T,bgauss,npairs];
+columndepthsca[rhob_,T_,bgauss_,npairs_]:=npairseff[rhob,T,bgauss,npairs]*Nscalayers*Lpmodnum +neinteff[rhob,T,bgauss,npairs];
 tauradsca[rhob_,T_,bgauss_,npairs_]:=sigmaes[T,bgauss]*columndepthsca[rhob,T,bgauss,npairs]//.consts;
 (* Hsca not really used *)
 Hsca[rhob_,T_,bgauss_,npairs_]:=(tauradsca[rhob,T,bgauss,npairs]/dtauradscads[rhob,T,bgauss,npairs])//.consts;
@@ -773,9 +783,9 @@ Frad0[T_]:=c*urad0[T];
 getsigmaphoton; (* computes sigmaff and sigmasynch *)
 (* used netot below since ele+pos are emitting paricles and just removes division by netot in sigma's *)
 dtauradabsds[rhob_,T_,bgauss_,npairs_]:=netot[rhob,npairs]*(sigmaff[rhob,T,bgauss,npairs]+sigmasynch[rhob,T,bgauss,npairs]) + npairs*sigmapairs2gamma[rhob,T,bgauss,npairs];
-columndepthabs[rhob_,npairs_]:=npairs*Nabslayers*Lpnum+neint[Rjetmod];
+columndepthabs[rhob_,npairs_]:=npairs*Nabslayers*Lpmodnum+neint[Rjetmod];
 (* note that division by netot[rhob,npairs] does not use netotint since just removed netot from dtauradabsds *)
-tauradabs[rhob_,T_,bgauss_,npairs_]:=columndepthabs[rhob,npairs]*(sigmaff[rhob,T,bgauss,npairs]+sigmasynch[rhob,T,bgauss,npairs]) + npairs*Nabslayers*Lpnum*sigmapairs2gamma[rhob,T,bgauss,npairs];
+tauradabs[rhob_,T_,bgauss_,npairs_]:=columndepthabs[rhob,npairs]*(sigmaff[rhob,T,bgauss,npairs]+sigmasynch[rhob,T,bgauss,npairs]) + npairs*Nabslayers*Lpmodnum*sigmapairs2gamma[rhob,T,bgauss,npairs];
 (* below is basically sigma*L for each correct term since here only electrons emit *)
 Habs[rhob_,T_,bgauss_,npairs_]:=(tauradabs[rhob,T,bgauss,npairs]/dtauradabsds[rhob,T,bgauss,npairs])//.consts;
 (* total *)
@@ -916,8 +926,9 @@ nradeff[rhob_,T_,bgauss_,npairs_]:=nrad[rhob,T,bgauss,npairs]*Min[xpeeff[rhob,T,
 
 
 (* scatter opacity *)
-taupairssca[rhob_,T_,bgauss_,npairs_]:=(sigmaes[T,bgauss]*nradeff[rhob,T,bgauss,npairs]*Lpnum + sigmacoul[rhob,T,bgauss,npairs]*netotint[npairs,Rjetmod,Lpnum])//.consts;
-dtaupairsscads[rhob_,T_,bgauss_,npairs_]:=(sigmaes[T,bgauss]*nradeff[rhob,T,bgauss,npairs]+sigmacoul[rhob,T,bgauss,npairs]*(neint[Rjetmod]/Rjetmod + npairs))//.consts;
+(* Coulomb uses npairs/2 since Debye screening only applies to opposite charges, which dominates *)
+taupairssca[rhob_,T_,bgauss_,npairs_]:=(sigmaes[T,bgauss]*nradeff[rhob,T,bgauss,npairs]*Lpmodnum + sigmacoul[rhob,T,bgauss,npairs/2]*netotint[npairs/2,Rjetmod,Lpmodnum])//.consts;
+dtaupairsscads[rhob_,T_,bgauss_,npairs_]:=(sigmaes[T,bgauss]*nradeff[rhob,T,bgauss,npairs]+sigmacoul[rhob,T,bgauss,npairs/2]*(neint[Rjetmod]/Rjetmod + npairs/2))//.consts;
 Hpairssca[rhob_,T_,bgauss_,npairs_]:=taupairssca[rhob,T,bgauss,npairs]/dtaupairsscads[rhob,T,bgauss,npairs];
 
 
@@ -932,8 +943,8 @@ result=If[tempnpairs0<lowestnpairsperne*ne[rhob],10^(-50),dtau[rhob,T,bgauss,npa
 (* return *)
 result
 ];
-taupairsabs[rhob_,T_,bgauss_,npairs_]:=dtaupairsabsds[rhob,T,bgauss,npairs]*Lpnum;
-Hpairsabs[rhob_,T_,bgauss_,npairs_]:=Lpnum;
+taupairsabs[rhob_,T_,bgauss_,npairs_]:=dtaupairsabsds[rhob,T,bgauss,npairs]*Lpmodnum;
+Hpairsabs[rhob_,T_,bgauss_,npairs_]:=Lpmodnum;
 (* total *)
 taupairstot[rhob_,T_,bgauss_,npairs_]:=(taupairsabs[rhob,T,bgauss,npairs]+taupairssca[rhob,T,bgauss,npairs]);
 damptaupairs[rhob_,T_,bgauss_,npairs_]:=(3*taupairstot[rhob,T,bgauss,npairs]+2*Sqrt[3])/(3*taupairstot[rhob,T,bgauss,npairs]+2*Sqrt[3]+2/taupairsabs[rhob,T,bgauss,npairs]);
@@ -947,8 +958,8 @@ result=If[tempnpairs0<lowestnpairsperne*ne[rhob],10^(-50),dtau[rhob,T,bgauss,npa
 (* return *)
 result
 ];
-taunumpairsabs[rhob_,T_,bgauss_,npairs_]:=dtaunumpairsabsds[rhob,T,bgauss,npairs]*Lpnum;
-Hnumpairsabs[rhob_,T_,bgauss_,npairs_]:=Lpnum;
+taunumpairsabs[rhob_,T_,bgauss_,npairs_]:=dtaunumpairsabsds[rhob,T,bgauss,npairs]*Lpmodnum;
+Hnumpairsabs[rhob_,T_,bgauss_,npairs_]:=Lpmodnum;
 (* total *)
 taunumpairstot[rhob_,T_,bgauss_,npairs_]:=(taunumpairsabs[rhob,T,bgauss,npairs]+taupairssca[rhob,T,bgauss,npairs]);
 damptaunumpairs[rhob_,T_,bgauss_,npairs_]:=(3*taunumpairstot[rhob,T,bgauss,npairs]+2*Sqrt[3])/(3*taunumpairstot[rhob,T,bgauss,npairs]+2*Sqrt[3]+2/taunumpairsabs[rhob,T,bgauss,npairs]);
@@ -1417,7 +1428,7 @@ sigma0prime=(3/2)*sigma0nu;
 sigmanueCA[CA_,rhob_,T_,bgauss_,npairs_]:=(sigma0prime*(1+myetae[rhob,T]/4)*((CVe+CA)^2+(1/3)*(CVe-CA)^2)*(kb*T/(me*c^2))^2);
 (* only take scattering for normal electron neutrinos *)
 sigmanue[rhob_,T_,bgauss_,npairs_]:=sigmanueCA[1/2,rhob,T,bgauss,npairs];
-taunusca[rhob_,T_,bgauss_,npairs_]:=sigmanuN[rhob,T]*nbfreeinteff[rhob, T, bgauss,npairs]+sigmanue[rhob,T,bgauss,npairs]*(npairseff2[rhob,T,bgauss,npairs]*Nscalayers*Lpnum+neinteff2[rhob,T,bgauss,npairs]);
+taunusca[rhob_,T_,bgauss_,npairs_]:=sigmanuN[rhob,T]*nbfreeinteff[rhob, T, bgauss,npairs]+sigmanue[rhob,T,bgauss,npairs]*(npairseff2[rhob,T,bgauss,npairs]*Nscalayers*Lpmodnum+neinteff2[rhob,T,bgauss,npairs]);
 (* below is just an approximation -- I don't know how it should be constrained unlike absorption *)
 dtaunuscads[rhob_,T_,bgauss_,npairs_]:=sigmanuN[rhob,T]*(nbfreeinteff[rhob, T, bgauss,npairs]/Rjetmod)+sigmanue[rhob,T,bgauss,npairs]*(npairseff2[rhob, T, bgauss, npairs]*Nscalayers+neinteff2[rhob,T,bgauss,npairs]/Rjetmod);
 Hnusca[rhob_,T_,bgauss_,npairs_]:=(taunusca[rhob,T,bgauss,npairs]/dtaunuscads[rhob,T,bgauss,npairs])//.consts;
@@ -1438,7 +1449,7 @@ sigmabrem[rhob_,T_,bgauss_,npairs_]:=(1/nbfree[rhob, T])*Qnubrem[rhob,T,bgauss,n
 (* absorber is neutrino, not baryon or pairs *)
 sigmapair[rhob_,T_,bgauss_,npairs_]:=(1/(nnu[rhob,T,bgauss,npairs]))*Qnupair[rhob,T,bgauss,npairs]/(c*unu0[T]);
 sigmaplasmon[rhob_,T_,bgauss_,npairs_]:=(1/(nnu[rhob,T,bgauss,npairs]))*Qnuplasmon[rhob,T,bgauss,npairs]/(c*unu0[T]);
-taunuabs[rhob_,T_,bgauss_,npairs_]:=(sigmacap[rhob,T,bgauss,npairs]+sigmabrem[rhob,T,bgauss,npairs])*(nbfreeint[ T,Rjetmod]) + (sigmapair[rhob,T,bgauss,npairs]+sigmaplasmon[rhob,T,bgauss,npairs])*(nnu[rhob,T,bgauss,npairs]*Nabslayers*Lpnum);
+taunuabs[rhob_,T_,bgauss_,npairs_]:=(sigmacap[rhob,T,bgauss,npairs]+sigmabrem[rhob,T,bgauss,npairs])*(nbfreeint[ T,Rjetmod]) + (sigmapair[rhob,T,bgauss,npairs]+sigmaplasmon[rhob,T,bgauss,npairs])*(nnu[rhob,T,bgauss,npairs]*Nabslayers*Lpmodnum);
 (* below is equivalent to \Sum Q0 / (c u0nu)  as is must be to work in the optically thin limit *)
 dtaunuabsds[rhob_,T_,bgauss_,npairs_]:=(nbfree[rhob, T]*sigmacap[rhob,T,bgauss,npairs]+nbfree[rhob, T]*sigmabrem[rhob,T,bgauss,npairs]+nnu[rhob,T,bgauss,npairs]*sigmapair[rhob,T,bgauss,npairs]+nnu[rhob,T,bgauss,npairs]*sigmaplasmon[rhob,T,bgauss,npairs]);
 Hnuabs[rhob_,T_,bgauss_,npairs_]:=(taunuabs[rhob,T,bgauss,npairs]/dtaunuabsds[rhob,T,bgauss,npairs])//.consts;
@@ -2354,7 +2365,8 @@ okerrorlnpairs=0.1;
 
 If[methodCPFR==2,
 (* if good enough error, then avoid Findroot and just assign *)
-If[errorlT<okerrorlT && errorlnpairs<okerrorlnpairs,
+(* NOTE: put in 1|| since don't want to switch to FR -- just leave with poor error or increase resolution of CP *)
+If[1||errorlT<okerrorlT && errorlnpairs<okerrorlnpairs,
 myT=SetPrecision[10^pickpoint[[1]],lowestprec];
 mynpairssol=SetPrecision[10^pickpoint[[2]],lowestprec];
 solstrial={T->myT,npairs->mynpairssol};
@@ -2362,7 +2374,14 @@ errorTnpairs=0;
 ];
 ];(* end if methodCPFR==2 *)
 
-If[methodCPFR==1 || errorlT>okerrorlT || errorlnpairs>okerrorlnpairs,
+If[ errorlT>okerrorlT || errorlnpairs>okerrorlnpairs,
+Print["Not good error, but don't use FR for now"];
+Print["errorlT=",errorlT];
+Print["errorlnpairs=",errorlnpairs];
+(* if change this, then remove 1|| above in methodCPFR==2 *)
+];
+
+If[methodCPFR==1 ,
 Print["FR"];
 solstrial=FindRoot[{eq1diff[10^x,10^y]==0,eq2diff[10^x,10^y]==0},{x,pickpoint[[1]]},{y,pickpoint[[2]]}];
 
@@ -2870,7 +2889,7 @@ omegabe1=(1/hbar)*(((me*c^2)^2+2*hbar*c*q*bgaussplasmavalue)^(1/2) - me*c^2);
 gettaualongjet:=Module[
 {foo},
 (* below uses all electrons+positrons -- assuming layer heated up.  Only integrate up through layers in comoving frame *)
-(*taualongjet1=(netot//.solsT)*sigmat*(fcover*Lpnum)//.consts;*)
+(*taualongjet1=(netot//.solsT)*sigmat*(fcover*Lpmodnum)//.consts;*)
 tauradscanum=tauradsca[rhobrad,Trad,bgaussplasmavalue,npairsnorm];
 taualongjet1=tauradscanum;
 (* now integrate up rest of jet's electrons associated with baryons *)
@@ -2955,7 +2974,7 @@ Rlp=vthp/wgp//.solsT;
 
 
 (* assume input npairs is half of npairs corresponding to opposite charges *)
-sigmacoul[rhob_,T_,bgauss_,npairshalf_]:=Module[{thetae,thetaevth,vth,vthermal,lambdaD,lambdac,sigma0,logL,sigmac,muth,netotforomegape,omegape,gammae,pe,Eele},
+sigmacoul[rhob_,T_,bgauss_,npairshalf_]:=Module[{thetae,thetaevth,vth,vthermal,lambdaD,lambdaC,lambdac,sigma0,logL,sigmac,muth,netotforomegape,omegape,gammae,pe,Eele},
 (* ELECTRONS *)
 thetae=(kb*T)/(me*c^2);
 thetaevth=(Ue[rhob,T]/ne[rhob]/(me*c^2));
@@ -2966,6 +2985,7 @@ muth=(me*c^2)/(kb*T);
 netotforomegape=ne[rhob] + npairshalf*2; (* for this, assume all pairs always contribute to current *)
 omegape=Sqrt[4*Pi*netotforomegape*q^2/me]*omegaprelfactor[muth];
 lambdaD=(vthermal/omegape);
+lambdaC=(1)*q^2/(kb*T);
 gammae=1/Sqrt[1-(vth/c)^2];
 pe=gammae*me*vth;
 Eele=(Sqrt[pe^2*c^2+me^2*c^4]-me*c^2);
@@ -2995,38 +3015,10 @@ etanu=dpe^2*nucnu//.solsT;
 (*netot=ne+npairs;*)
 (* only protons and pairs make change in average velocity of electron-positron pairs *)
 nall=np[rhobnorm]+npairs//.solsT;
-
-(* ELECTRONS *)
-thetae=(kb*Trad)/(me*c^2);
-thetaevth=(Ue[rhobrad,Trad]/ne[rhobrad]/(me*c^2));
-vth=c*Sqrt[thetaevth*(2+thetaevth)]/(1+thetaevth);
-(*LogL=20;*)
-vthermal=vth;
-muth=(me*c^2)/(kb*Trad);
-netotforomegape=ne[rhobrad] + npairs; (* for this, assume all pairs always contribute to current *)
-omegape=Sqrt[4*Pi*netotforomegape*q^2/me]*omegaprelfactor[muth];
-lambdaD=(vthermal/omegape);
-gammae=1/Sqrt[1-(vth/c)^2];
-pe=gammae*me*vth;
-Eele=(Sqrt[pe^2*c^2+me^2*c^4]-me*c^2);
-lambdac=q^2/(Eele);
-sigma0=(5/16)*lambdac^2;
-logL=Log[lambdaD/lambdac];
-sigmac=sigma0*logL;
-
 (* etas[units] = (L/S)*L *)
-(* old, just checks *)
-(* number of protons witin Debye sphere *)
-LambdaC1=24*Pi*np[rhobrad]*lambdaD^3;
-(* number of charge-carrying particles within Debye sphere *)
-LambdaC2=24*Pi*netotforomegape*lambdaD^3;
-LogLother1=Log[(kb*Trad)^(3/2)/(Sqrt[Pi]*1*q^3*nb[rhobrad])];
-lambdaC=(1)*q^2/(kb*Trad);
-LogLother2=Log[lambdaD/lambdaC];
 (*etas=c*radiuse*(thetae)^(-3/2)*LogLother2;*)
-
-
 sigmac=sigmacoul[rhobnorm,Tnorm,bgaussrad,npairsrad];
+
 lambdamfps=1/(sigmac*nall)//.solsT;
 nucs=vth/lambdamfps//.solsT;
 etas=dpe^2*nucs//.solsT;
@@ -3035,13 +3027,36 @@ If[etas<0.0,etas=10^(-500);];
 (* final Spitzer result -- now same as original one *)
 etab=etas;
 Tev=kb*T/ergPmev*10^6//.solsT;
+(* ELECTRONS *)
+thetae=(kb*Trad)/(me*c^2);
+thetaevth=(Ue[rhobrad,Trad]/ne[rhobrad]/(me*c^2));
+vth=c*Sqrt[thetaevth*(2+thetaevth)]/(1+thetaevth);
+(*LogL=20;*)
+vthermal=vth;
+muth=(me*c^2)/(kb*Trad);
+netotforomegape=ne[rhobrad] + npairsrad; (* for this, assume all pairs always contribute to current *)
+omegape=Sqrt[4*Pi*netotforomegape*q^2/me]*omegaprelfactor[muth];
+lambdaD=(vthermal/omegape);
+lambdaC=(1)*q^2/(kb*Trad);
+gammae=1/Sqrt[1-(vth/c)^2];
+pe=gammae*me*vth;
+Eele=(Sqrt[pe^2*c^2+me^2*c^4]-me*c^2);
+lambdac=q^2/(Eele);
+sigma0=(5/16)*lambdac^2;
+logL=Log[lambdaD/lambdac];
+LogLother2=Log[lambdaD/lambdaC];
+(* number of protons witin Debye sphere *)
+LambdaC1=24*Pi*np[rhobrad]*lambdaD^3;
+(* number of charge-carrying particles within Debye sphere *)
+LambdaC2=24*Pi*netotforomegape*lambdaD^3;
+(* old, just checks *)
+LogLother1=Log[(kb*Trad)^(3/2)/(Sqrt[Pi]*1*q^3*nb[rhobrad])];
 etaprimebook=10^(-14)*LogLother2*(Tev)^(-3/2)//.solsT;
 If[etaprimebook<0.0,etaprimebook=10^(-500);];
 etabook=etaprimebook*c^2/(4*Pi)//.solsT;
 
 (* total resistivity from radiation drag and from Coulomb/annihilation *)
 etatotal=etac+etanu+etab;
-
 Lundquistc=Lpnum*vaout/etac//.solsT;
 Lundquistnu=Lpnum*vaout/etanu//.solsT;
 Lundquists=Lpnum*vaout/etas//.solsT;
@@ -3230,23 +3245,23 @@ Solve[paireden==Bit^2/(8*Pi),Bit];
 gettaus:=Module[
 {foo},
 netotnum=ne[rhobnorm]+npairs//.solsT;
-taupairL=netotnum*sigmaesnum*Lpnum//.consts; (* diag *)
-taugammaL=netotnum*sigmaesnum*Lpnum//.consts; (* diag *)
+taupairL=netotnum*sigmaesnum*Lpmodnum//.consts; (* diag *)
+taugammaL=netotnum*sigmaesnum*Lpmodnum//.consts; (* diag *)
 (* Sweet Parker optical depth across layer and along layer *)
 tauspc=sigmaesnum*netotnum*Deltaspc//.solsT;
 tausps=sigmaesnum*netotnum*Deltasps//.solsT;
 tauspt=sigmaesnum*netotnum*Deltaspt//.solsT;
-tauL=sigmaesnum*netotnum*(1)*Lpnum//.solsT;
+tauL=sigmaesnum*netotnum*(1)*Lpmodnum//.solsT;
 (* compute optical depth to electron scattering within Petschek layer *)
 taupete=sigmaesnum*netotnum*Deltapete//.solsT;
 taupetp=sigmaesnum*netotnum*Deltapetp/.solsT;
 (* Compute optical depth to baryon-electron scattering *)
 (*sigmac=sigmat/(kb*T/(me*c^2))^2//.solsT;*)
 taubet=np[rhobrad]*(Deltaspt)*sigmac//.solsT;
-(*taubef=np*(Lpnum*fcover)*sigmac//.consts//.solsT;*)
+(*taubef=np*(Lpmodnum*fcover)*sigmac//.consts//.solsT;*)
 (* baryons exist across entire jet, not just in layers *)
 taubef=sigmaesnum*np[rhobrad]*Rjetmod//.consts//.solsT;
-taubeR=np[rhobrad]*(Lpnum*1)*sigmac//.solsT;
+taubeR=np[rhobrad]*(Lpmodnum*1)*sigmac//.solsT;
 (* So for any reasonable temperature baryons and electrons are significantly coupled due to high density still *)
 ];
 
@@ -3257,7 +3272,7 @@ getTdiffs:=Module[
 TdiffacrossSPc = tauspc*Deltaspc/c//.solsT;
 TdiffacrossSPs = tausps*Deltasps/c//.solsT;
 TdiffacrossSPt= tauspt*Deltaspt/c//.solsT;
-Tdiffalong= tauL*Lpnum/c//.solsT;
+Tdiffalong= tauL*Lpmodnum/c//.solsT;
 
 Tdiffsca1obs=(1/gammavalue)*Max[3*tauradscanum*Hscanum/c,Hscanum/c];
 Tdiffsca2obs=(1/gammavalue)*Max[3*Deltaspt^2/(lambdascanum*c),Deltaspt/c];
@@ -3267,7 +3282,7 @@ Tdiffabs1obs=(1/gammavalue)*Max[3*tauradabsnum*Habsnum/c,Habsnum/c];
 Tdiffabs2obs=(1/gammavalue)*Max[3*Deltaspt^2/(lambdaabsnum*c),Deltaspt/c];
 Tdiffabs3obs=(1/gammavalue)*Max[3*Deltapetp^2/(lambdaabsnum*c),Deltapetp/c];
 
-(* Below is one special case when Lp should really be used since directly along single current layer *)
+(* Below is one special case when Lpmod should really be used since directly along single current layer *)
 (* Ejection particle velocity is Alfven velocity outside layer *)
 vtransit=vaout;
 Ttransit=(Lpnum/vtransit)//.solsT;
@@ -3501,6 +3516,7 @@ minmethodtau=3; (* ==1 more robust than FindRoot.  ==2 forces to avoid \gamma+pa
 eminobs=eminobsMeV*ergPmev/(me*c^2); (* most strict lower-limit for highest-energy photon *)
 epmin=eminobs/gammavalue;
 
+(* stays Rjet and Lpnum, not Rjetmod and Lpmodnum *)
 Area=Pi*Rjet*Lpnum;
 deltat=Ttransit;
 
@@ -3545,7 +3561,7 @@ Neetot[epmin_,epmax_,epthick_]:=Nee[epmin,epmax,epthick]+Nee2;
 tauggge[ep_,epmin_,epmax_,epthick_]:=sigmage[ep]*Neetot[epmin,epmax,epthick]/Area;
 
 (* similar to taualongjet calculation *)
-tauge1[ep_]:=sigmage[ep]*((npairs//.solsTrad)*Nscalayers*Lpnum+ne[rhobrad]*Rjetmod);
+tauge1[ep_]:=sigmage[ep]*((npairs//.solsTrad)*Nscalayers*Lpmodnum+ne[rhobrad]*Rjetmod);
 (* now integrate up rest of jet's electrons associated with baryons *)
 tauge2[ep_]:=sigmage[ep]/(2*gammavalue)*Integrate[ne[rhobrad/(rcep/Ljet)^2],{rcep,Ljet,Infinity}];
 (* below is final opacity -- no pair production due to escaping photons for a given emax yet included *)
