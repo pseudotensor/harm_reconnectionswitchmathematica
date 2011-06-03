@@ -203,7 +203,7 @@ mymmode=SetPrecision[mymmode,lowestprec];
 (* setup values from jet solution so don't have to repeat expensive jet calculations *)
 setupvalues:=Module[
 {foo},
-Unprotect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,gammavalue,Lp,Lpmod,Lpnum,Lpmodnum,Pm,Um];
+Unprotect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,Rjetmodnum,gammavalue,Lp,Lpmod,Lpnum,Lpmodnum,Pm,Um];
 
 
 
@@ -219,10 +219,11 @@ Lpnum=Lp//.consts;
 (* modifications to Rjet and Lp *)
 (* vrecguess only valid in fast reconnection regime, need to iterate to see if fast or slow! *)
 (* TODO *)
-vrecguess=0.02*c;
+vrecguess=vrecguessoc*c;
 Lpmod=1/(gammavalue*Sin[thetajet]/Rjet + 2*vrecguess/(c*Lp));
 Lpmodnum=Lpmod//.consts;
 Rjetmod=Rjet/(gammavalue*Sin[thetajet]);
+Rjetmodnum=Rjetmod//.consts;
 
 (* choose based upon which gamma_jet {_new} file used *)
 If[1==0,
@@ -385,7 +386,7 @@ bhvalue=(Bhvalue+udotBvalue/c*uhvalue/c)/gammavalue;
 bphivalue=(Bphivalue+udotBvalue/c*uphivalue/c)/gammavalue;
 
 
-Protect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,gammavalue,Lp,Lpmod,Lpnum,Lpmodnum,Pm,Um];
+Protect[thetajet,gammavalue,rhobvalue,rhobingoing,bsqvalue,bsqTvalue,bsqgaussvalue,bsqgaussTvalue,bgaussvalue,bgaussTvalue,Tvalue,Bphivalue,omegafvalue,Rjet,Rjetmod,Rjetmodnum,gammavalue,Lp,Lpmod,Lpnum,Lpmodnum,Pm,Um];
 ];
 
 

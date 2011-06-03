@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       145,          7]
-NotebookDataLength[    175065,       3911]
-NotebookOptionsPosition[    173171,       3848]
-NotebookOutlinePosition[    173549,       3864]
-CellTagsIndexPosition[    173506,       3861]
+NotebookDataLength[    177493,       3962]
+NotebookOptionsPosition[    175607,       3899]
+NotebookOutlinePosition[    175977,       3915]
+CellTagsIndexPosition[    175934,       3912]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1557,9 +1557,29 @@ Cell[BoxData[
          RowBox[{"rhostar", "*", 
           RowBox[{"c", "^", "2"}], "*", "8", "*", "Pi"}], "]"}]}], ";", 
        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"ivr", "\[Equal]", "0"}], ",", 
+         RowBox[{
+          RowBox[{"vrecguessoc", "=", "0.01"}], ";"}], ",", 
+         RowBox[{
+          RowBox[{"vrecguessoc", "=", "0.1"}], ";"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{"vrecguess", "=", 
+          RowBox[{
+           RowBox[{"10", "^", 
+            RowBox[{"(", 
+             RowBox[{"-", "12"}], ")"}]}], "*", "c"}]}], ";"}], "*)"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
        RowBox[{"(*", " ", 
         RowBox[{"ensure", " ", "precision", " ", "is", " ", "kept"}], " ", 
         "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"vrecguessoc", "=", 
+        RowBox[{"SetPrecision", "[", 
+         RowBox[{"vrecguessoc", ",", "lowestprec"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
        RowBox[{"Ljet", "=", 
         RowBox[{"SetPrecision", "[", 
          RowBox[{"Ljet", ",", "lowestprec"}], "]"}]}], ";", 
@@ -1597,7 +1617,7 @@ Cell[BoxData[
   3.4689742974440784`*^9, 3.4689743123955774`*^9}, {3.472023597056883*^9, 
   3.4720236462175727`*^9}, {3.4943733269876595`*^9, 3.494373327288091*^9}, {
   3.494373963302635*^9, 3.494373971694702*^9}, {3.495531861381315*^9, 
-  3.495531862022237*^9}}],
+  3.495531862022237*^9}, {3.516130146253508*^9, 3.5161301992491207`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -3442,6 +3462,19 @@ Cell[BoxData[
         RowBox[{"outputstrm", ",", 
          RowBox[{"myO", "[", "sigmac", "]"}]}], "]"}], ";", 
        RowBox[{"WriteString", "[", 
+        RowBox[{"outputstrm", ",", "\"\< \>\""}], "]"}], ";", " ", 
+       RowBox[{"(*", " ", "extra", " ", "*)"}], "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"WriteString", "[", 
+        RowBox[{"outputstrm", ",", 
+         RowBox[{"myO", "[", "Rjetmodnum", "]"}]}], "]"}], ";", 
+       RowBox[{"WriteString", "[", 
+        RowBox[{"outputstrm", ",", "\"\< \>\""}], "]"}], ";", " ", 
+       RowBox[{"(*", " ", "extra", " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"WriteString", "[", 
+        RowBox[{"outputstrm", ",", 
+         RowBox[{"myO", "[", "Lpmodnum", "]"}]}], "]"}], ";", 
+       RowBox[{"WriteString", "[", 
         RowBox[{"outputstrm", ",", "\"\< \>\""}], "]"}], ";"}]}], " ", 
      RowBox[{"(*", " ", "extra", " ", "*)"}], "\[IndentingNewLine]", 
      "\[IndentingNewLine]", "]"}]}], ";"}]}]], "Input",
@@ -3490,7 +3523,7 @@ Cell[BoxData[
    3.4967567416960526`*^9, 3.496756750438624*^9}, {3.496759327614421*^9, 
    3.4967593589294496`*^9}, {3.4967636837282047`*^9, 3.496763699040222*^9}, {
    3.4970372561704397`*^9, 3.497037266535344*^9}, {3.4970453515710545`*^9, 
-   3.4970453596727037`*^9}}],
+   3.4970453596727037`*^9}, {3.516053333489655*^9, 3.5160533457896976`*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -3585,6 +3618,12 @@ Cell[BoxData[
                     RowBox[{
                     RowBox[{"i", "=", "startLjet"}], ",", 
                     RowBox[{"i", "\[LessEqual]", "endLjet"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"For", "[", 
+                    RowBox[{
+                    RowBox[{"ivr", "=", "0"}], ",", 
+                    RowBox[{"ivr", "\[LessEqual]", "1"}], ",", 
                     "\[IndentingNewLine]", "\[IndentingNewLine]", 
                     RowBox[{"(*", " ", 
                     RowBox[{"Get", " ", "results"}], " ", "*)"}], 
@@ -3605,12 +3644,18 @@ Cell[BoxData[
                     "Ljet", ",", "myfakemu"}], " ", "*)"}], 
                     "\[IndentingNewLine]", 
                     RowBox[{"Print", "[", 
+                    RowBox[{"\"\<ivr=\>\"", ",", "ivr"}], "]"}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
                     RowBox[{
                     "\"\<i j k l m n o p = \>\"", ",", "i", ",", "\"\< \>\"", 
                     ",", "j", ",", "\"\< \>\"", ",", "k", ",", "\"\< \>\"", 
                     ",", "l", ",", "\"\< \>\"", ",", "m", ",", "\"\< \>\"", 
                     ",", "n", ",", "\"\< \>\"", ",", "o", ",", "\"\< \>\"", 
                     ",", "p"}], "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"Print", "[", 
+                    RowBox[{"\"\<vrecguessoc=\>\"", ",", "vrecguessoc"}], 
+                    "]"}], ";", "\[IndentingNewLine]", 
                     RowBox[{"Print", "[", 
                     RowBox[{"\"\<Ljet=\>\"", ",", "Ljet"}], "]"}], ";", 
                     "\[IndentingNewLine]", 
@@ -3663,7 +3708,8 @@ Cell[BoxData[
                     " ", "to", " ", "avoid", " ", "losing", " ", "memory"}], 
                     " ", "*)"}], "\[IndentingNewLine]", 
                     RowBox[{"(*", " ", 
-                    RowBox[{"So", " ", "we", " ", "do", " ", "10", " ", 
+                    RowBox[{
+                    "So", " ", "we", " ", "do", " ", "10", " ", 
                     "computations", " ", "and", " ", "then", " ", "clear", 
                     " ", "all", " ", "these", " ", "vars", " ", "and", " ", 
                     "then", " ", "reload", " ", "the", " ", "rec", " ", 
@@ -3704,6 +3750,9 @@ Cell[BoxData[
                     RowBox[{"numparmiters", "=", 
                     RowBox[{"numparmiters", "+", "1"}]}], ";", 
                     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                    RowBox[{"ivr", "++"}], ";"}]}], "\[IndentingNewLine]", 
+                    "]"}], ";", "\[IndentingNewLine]", 
+                    RowBox[{"checkgamma", "[", "gammavalue", "]"}], ";", 
                     "\[IndentingNewLine]", "\[IndentingNewLine]", 
                     RowBox[{"i", "++"}], ";"}]}], "\[IndentingNewLine]", 
                     "]"}], ";", "\[IndentingNewLine]", 
@@ -3844,12 +3893,14 @@ Cell[BoxData[
    3.494360046791675*^9}, {3.494360213601536*^9, 3.494360308267659*^9}, {
    3.4943604109453025`*^9, 3.4943604211800194`*^9}, {3.4943718980629663`*^9, 
    3.4943719480348225`*^9}, {3.4943719890337763`*^9, 
-   3.4943719973757715`*^9}, {3.495523298848998*^9, 3.4955233252369423`*^9}}]
+   3.4943719973757715`*^9}, {3.495523298848998*^9, 3.4955233252369423`*^9}, {
+   3.516129928908484*^9, 3.5161299900821543`*^9}, {3.516130224678788*^9, 
+   3.516130231748457*^9}}]
 },
 AutoGeneratedPackage->Automatic,
 WindowSize->{867, 898},
 WindowMargins->{{41, Automatic}, {Automatic, 51}},
-FrontEndVersion->"7.0 for Microsoft Windows (32-bit) (February 18, 2009)",
+FrontEndVersion->"7.0 for Linux x86 (64-bit) (February 25, 2009)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -3864,54 +3915,54 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[567, 22, 179, 5, 31, "Input",
+Cell[567, 22, 179, 5, 32, "Input",
  InitializationCell->True],
-Cell[749, 29, 355, 10, 40, "Output",
+Cell[749, 29, 355, 10, 43, "Output",
  InitializationCell->True]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1141, 44, 102, 2, 31, "Input",
+Cell[1141, 44, 102, 2, 32, "Input",
  InitializationCell->True],
-Cell[1246, 48, 200, 4, 30, "Output",
+Cell[1246, 48, 200, 4, 31, "Output",
  InitializationCell->True]
 }, Open  ]],
-Cell[1461, 55, 375, 8, 31, "Input",
+Cell[1461, 55, 375, 8, 55, "Input",
  InitializationCell->True],
-Cell[1839, 65, 1748, 40, 332, "Input",
+Cell[1839, 65, 1748, 40, 363, "Input",
  InitializationCell->True],
-Cell[3590, 107, 942, 23, 172, "Input",
+Cell[3590, 107, 942, 23, 187, "Input",
  InitializationCell->True],
-Cell[4535, 132, 764, 22, 112, "Input",
+Cell[4535, 132, 764, 22, 121, "Input",
  InitializationCell->True],
-Cell[5302, 156, 2341, 56, 352, "Input",
+Cell[5302, 156, 2341, 56, 385, "Input",
  InitializationCell->True],
-Cell[7646, 214, 1168, 30, 192, "Input",
+Cell[7646, 214, 1168, 30, 209, "Input",
  InitializationCell->True],
-Cell[8817, 246, 1842, 42, 212, "Input",
+Cell[8817, 246, 1842, 42, 253, "Input",
  InitializationCell->True],
-Cell[10662, 290, 2044, 54, 252, "Input",
+Cell[10662, 290, 2044, 54, 275, "Input",
  InitializationCell->True],
-Cell[12709, 346, 1220, 28, 192, "Input",
+Cell[12709, 346, 1220, 28, 253, "Input",
  InitializationCell->True],
-Cell[13932, 376, 1075, 25, 172, "Input",
+Cell[13932, 376, 1075, 25, 231, "Input",
  InitializationCell->True],
-Cell[15010, 403, 8563, 221, 192, "Input",
+Cell[15010, 403, 8563, 221, 209, "Input",
  InitializationCell->True],
-Cell[23576, 626, 19215, 426, 2492, "Input",
+Cell[23576, 626, 19215, 426, 2739, "Input",
  InitializationCell->True],
-Cell[42794, 1054, 799, 20, 132, "Input",
+Cell[42794, 1054, 799, 20, 143, "Input",
  InitializationCell->True],
-Cell[43596, 1076, 11116, 271, 552, "Input",
+Cell[43596, 1076, 11116, 271, 671, "Input",
  InitializationCell->True],
-Cell[54715, 1349, 10724, 250, 1312, "Input",
+Cell[54715, 1349, 11536, 270, 1551, "Input",
  InitializationCell->True],
-Cell[65442, 1601, 8455, 196, 752, "Input",
+Cell[66254, 1621, 8455, 196, 891, "Input",
  InitializationCell->True],
-Cell[73900, 1799, 1566, 44, 112, "Input",
+Cell[74712, 1819, 1566, 44, 121, "Input",
  InitializationCell->True],
-Cell[75469, 1845, 77537, 1647, 5892, "Input",
+Cell[76281, 1865, 78240, 1660, 6963, "Input",
  InitializationCell->True],
-Cell[153009, 3494, 20158, 352, 2012, "Input",
+Cell[154524, 3527, 21079, 370, 2387, "Input",
  InitializationCell->True]
 }
 ]

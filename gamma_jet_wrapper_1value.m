@@ -78,6 +78,9 @@ SelectionEvaluate[nb3]
 
 setupvaluesother:=Module[
 {foo},
+
+vrecguessoc=0.1;
+
 (* Note that in gamma_jet _reconnection also assume Lp=Rjet *)
 Ljet=5*10^(14);
 Ljet= 442966;

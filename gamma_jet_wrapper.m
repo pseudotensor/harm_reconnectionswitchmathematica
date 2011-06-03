@@ -344,7 +344,12 @@ Ljet=N[Exp[x1]];
 rhostar=Mdot/(AM*(G*M/c^2)^2*c)//.preconsts;
 BGauss=Sqrt[rhostar*c^2*8*Pi];
 
+If[ivr==0,vrecguessoc=0.01;,vrecguessoc=0.1;];
+(*vrecguess=10^(-12)*c;*)
+
+
 (* ensure precision is kept *)
+vrecguessoc=SetPrecision[vrecguessoc,lowestprec];
 Ljet=SetPrecision[Ljet,lowestprec];
 myfakemu=SetPrecision[myfakemu,lowestprec];
 thebr0gauss=SetPrecision[thebr0gauss,lowestprec];
@@ -681,6 +686,9 @@ WriteString[outputstrm,myO[BphiTvalue]];WriteString[outputstrm," "]; (* extra *)
 WriteString[outputstrm,myO[veffpairsnum]];WriteString[outputstrm," "]; (* extra *)
 WriteString[outputstrm,myO[sigmac]];WriteString[outputstrm," "]; (* extra *)
 
+WriteString[outputstrm,myO[Rjetmodnum]];WriteString[outputstrm," "]; (* extra *)
+WriteString[outputstrm,myO[Lpmodnum]];WriteString[outputstrm," "]; (* extra *)
+
 ];
 
 
@@ -712,6 +720,7 @@ For[l=startnu,l<=endnu,
 For[k=startbr0,k<=endbr0,
 For[j=startmu,j<=endmu,
 For[i=startLjet,i<=endLjet,
+For[ivr=0,ivr<=1,
 
 (* Get results *)
 
@@ -720,7 +729,9 @@ setupsystemconstants;
 
 
 (* Print out i,j,Ljet,myfakemu *)
+Print["ivr=",ivr];
 Print["i j k l m n o p = ",i," ",j," ",k," ",l," ",m," ",n," ",o," ",p];
+Print["vrecguessoc=",vrecguessoc];
 Print["Ljet=",Ljet];
 Print["myfakemu=",myfakemu];
 Print["thebr0gauss=",thebr0gauss];
@@ -751,7 +762,9 @@ numparmiters=0;
 ];
 numparmiters=numparmiters+1;
 
-
+ivr++;
+];
+checkgamma[gammavalue];
 
 i++;
 ];
