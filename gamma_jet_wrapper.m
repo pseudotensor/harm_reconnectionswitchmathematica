@@ -402,7 +402,7 @@ myO[var_]:=(CForm[N[var]])//.{Overflow[]->"1E+300",Underflow[]->"1E-300"};
 WriteStuffall1:=Module[
 {foo},
 (*Print["WriteStrings"];*)
-WriteString[outputstrm,myO[i]];WriteString[outputstrm," "];
+WriteString[outputstrm,myO[ivr]];WriteString[outputstrm," "];WriteString[outputstrm,myO[i]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[j]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[k]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[l]];WriteString[outputstrm," "];
@@ -410,9 +410,11 @@ WriteString[outputstrm,myO[m]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[n]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[o]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[p]];WriteString[outputstrm," "];
-
+(* extra space *)
+WriteString[outputstrm," "];
 WriteString[outputstrm,myO[computetime]];WriteString[outputstrm," "];
-
+(* extra space *)
+WriteString[outputstrm," "];
 WriteString[outputstrm,myO[Ljet]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[myfakemu]];WriteString[outputstrm," "];
 WriteString[outputstrm,myO[thebr0gauss]];WriteString[outputstrm," "];
