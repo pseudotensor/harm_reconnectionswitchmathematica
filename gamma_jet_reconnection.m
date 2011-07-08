@@ -847,7 +847,13 @@ Ppairs0qed[T_,bgauss_]:=uapairs0[T,bgauss]/3+2*ubpairs0[T,bgauss]/3+ucpairs0[T,b
 
 (* TRUE-ITERATED -- solved with T now since otherwise simple overall iteration and only solving for T led to flip-flop behavior and never converged.
 So below is used as equation instead when calling gettemperature *)
-npairs0qed[T_,bgauss_]:=Upairs0qed[T,bgauss]/(3*kb*T);
+(* FactorN = (gamma-1) : 2/3 -> 1/3 as T gets higher *)
+(*FactorN[T_]:=(2/3)*(1-FactorT[T])+FactorT[T]*(1/3);
+npairs0qed[T_,bgauss_]:=FactorN[T]*Upairs0qed[T,bgauss]/(kb*T);
+*)
+
+(* Just use P = n k T *)
+npairs0qed[T_,bgauss_]:=Ppairs0qed[T,bgauss]/(kb*T);
 
 (* if in non-QED regime, use more accurate solution *)
 (* But this forces ?pairs to not be function of T -- problem if photon radiation term wasn't there probably *)
@@ -1536,7 +1542,9 @@ Z=1; (* protons *)
 netot[rhob_,npairs_]:= ne[rhob] + npairs; (* unsure if total or just ne or something more complicated *)
 Q1fffactor1=SetPrecision[1.4*10^(-27),lowestprec];
 Q1fffactor2=SetPrecision[4.4*10^(-10),lowestprec];
-Q1ff[rhob_,T_,npairs_]:=Q1fffactor1*T^(1/2)*Z^2*netot[rhob,npairs]*np[rhob]*(1+Q1fffactor2*T);
+(* was using np[rhob], but then didn't account for pair collisions *)
+(* only had one 1+QT factor, but not squared for pairs *)
+Q1ff[rhob_,T_,npairs_]:=Q1fffactor1*T^(1/2)*Z^2*netot[rhob,npairs]^2*(1+Q1fffactor2*T)^2;
 (* divide out emitting particles so sigma is per particle density per length so that when integrate over density of emitting particles along length get back optical depth *)
 sigmaff0[rhob_,T_,npairs_]:=Q1ff[rhob,T,npairs]/(netot[rhob,npairs]*c*urad0[T]);
 (*nbsigmaff0[rhob_,T_,npairs_]:=Q1ff[rhob,T,npairs]/(c*urad0[T]);*)
@@ -2166,6 +2174,7 @@ npairsguess=0;
 RELTOL=10^(-10);
 errorTnpairs=10^30*RELTOL;
 (* bad sol so easily seen when debugging if this is not set *)
+Clear[T,npairs];
 solsTtrial={T->0,npairs->0};
 
 
@@ -2210,6 +2219,7 @@ mynpairssol=0;
 
 myT=SetPrecision[myT,lowestprec];
 mynpairssol=SetPrecision[mynpairssol,lowestprec];
+Clear[T,npairs];
 solsTtrial={T->myT,npairs->mynpairssol};
 errorTnpairs=0;
 (* Then done! *)
@@ -2463,6 +2473,7 @@ Protect[eqtotdiff];
 RELTOL=10^(-10);
 errorTnpairs=10^30*RELTOL;
 (* bad sol so easily seen when debugging if this is not set *)
+Clear[T,npairs];
 solsTtrial={T->0,npairs->0};
 
 
@@ -2520,7 +2531,9 @@ errorTnpairs=resultmin0[[2]];
 ]; (* end overall RELTOL check before doing various methods *)
 
 myTmev=kb*T/ergPmev//.{T->solsTtrial[[1,2]]};
-If[doprintdebug==1,Print["myTmev=",myTmev," npairs/ne=",solsTtrial[[2,2]]/ne[rhobrad]," error=",errorTnpairs];];
+If[doprintdebug==1,Print["myTmev=",myTmev," npairs/ne=",solsTtrial[[2,2]]/ne[rhobrad]," error=",errorTnpairs];
+Print["solsTtrial=",solsTtrial];
+];
 
 (* return *)
 solsTtrial
@@ -2530,7 +2543,7 @@ solsTtrial
 
 
 gettemperaturetestguess[rhobnorm0_,rhobrad0_,Tnorm0_,Trad0_,bgaussnorm0_,bgaussrad0_,npairsnorm0_,npairsrad0_]:=Module[
-{foo,rhobnorm=rhobnorm0,rhobrad=rhobrad0,Tnorm=Tnorm0,Trad=Trad0,bgaussnorm=bgaussnorm0,bgaussrad=bgaussrad0,npairsnorm=npairsnorm0,npairsrad=npairsrad0,Pbnum},
+{foo,rhobnorm=rhobnorm0,rhobrad=rhobrad0,Tnorm=Tnorm0,Trad=Trad0,bgaussnorm=bgaussnorm0,bgaussrad=bgaussrad0,npairsnorm=npairsnorm0,npairsrad=npairsrad0,Pbnum,solstrial},
 
 Unprotect[Pgfunc];
 Pgfunc[T_,npairs_]:=Pg[rhobnorm,rhobrad,T,bgaussnorm,bgaussrad,npairs]//.consts;
@@ -2552,10 +2565,14 @@ npairsguess=npairsnorm;
 (* get solution for T and npairs *)
 level1=0; level2=0;nlevel1=1;nlevel2=1;
 solstrial=gettemperature[level1,level2,nlevel1,nlevel2,eq1diff,eq2diff,Tguess,npairsguess];
+Clear[solsTtrial,T,npairs];
 solsTtrial={T->solstrial[[1]],npairs->solstrial[[2]]};
 
 myTmev=kb*T/ergPmev//.{T->solsTtrial[[1,2]]};
-If[doprintdebug==1,Print["myTmev=",myTmev," npairs/ne=",solsTtrial[[2,2]]/ne[rhobrad]];];
+If[doprintdebug==1,
+Print["myTmev=",myTmev," npairs/ne=",solsTtrial[[2,2]]/ne[rhobrad]];
+Print["solsTtrial=",solsTtrial];
+];
 
 (* return *)
 solsTtrial
