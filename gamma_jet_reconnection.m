@@ -3304,6 +3304,7 @@ Tdiffabs3obs=(1/gammavalue)*Max[3*Deltapetp^2/(lambdaabsnum*c),Deltapetp/c];
 
 (* Below is one special case when Lpmod should really be used since directly along single current layer *)
 (* Ejection particle velocity is Alfven velocity outside layer *)
+(* a factor of 2 that's missing below for obs quantities is inserted in SM plot routines! *)
 vtransit=vaout;
 Ttransit=(Lpnum/vtransit)//.solsT;
 Ttransitobs=Ttransit/gammavalue;
