@@ -2918,7 +2918,8 @@ nbfake=nb[rhobfake];
 nefake2=ne[rhobfake];
 taualongjet2=Integrate[nefake2*sigmaesnum/(2*gammavalue),{rc,Ljet,Infinity}];
 (* below is final opacity -- no pair production due to escaping photons for a given emax yet included *)
-taualongjet=taualongjet1+taualongjet2;
+(* below should only include taualongjet1, since taualongjet2 part is already included *)
+taualongjet=taualongjet1;
 ];
 
 
